@@ -1,9 +1,9 @@
 FROM crowdsecurity/crowdsec:latest-debian
-RUN wget https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh && \
-    chmod +x script.deb.sh && \ 
-    bash script.deb.sh && \
+RUN apt update && \
+    apt install -y curl && \
+    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | bash && \ 
     apt update && \
-    apt install \
+    apt install -y \
       iptables \ 
       ip6tables \ 
       crowdsec-firewall-bouncer-iptables && \
