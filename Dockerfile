@@ -5,12 +5,10 @@ RUN apt update && \
     apt update && \
     apt install -y \
       iptables \ 
-      ip6tables \ 
       crowdsec-firewall-bouncer-iptables && \
     apt autoremove && \
     apt clean && \
     rm -rf \
-        /script.deb.sh \
         /tmp/* \
         /var/lib/apt/lists/* \
         /var/tmp/* \
