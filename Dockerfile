@@ -13,5 +13,6 @@ RUN apt update && \
         /var/lib/apt/lists/* \
         /var/tmp/* \
         /var/log/* && \
-    touch crowdsec-firewall-bouncer.yaml.local && \
+    touch /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml.local && \
+    
     
