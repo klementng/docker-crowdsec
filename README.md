@@ -19,6 +19,7 @@ services:
       - ./crowdsec/data:/var/lib/crowdsec/data/
     userns_mode: host
     network_mode: host
+    restart: unless-stopped
 ```
 
 ## Configuring
