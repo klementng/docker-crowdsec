@@ -10,7 +10,7 @@ log_compression: true
 log_max_size: 100
 log_max_backups: 3
 log_max_age: 30
-api_url: ${LOCAL_API_URL:-http://0.0.0.0:8080/}
+api_url: ${LOCAL_API_URL:-http://0.0.0.0:8080}
 api_key: {}
 insecure_skip_verify: false
 disable_ipv6: false
@@ -62,8 +62,65 @@ prometheus:
 EOF
 )
 
+CONFIG=$(cat <<EOF
+common:
+  daemonize: false
+  log_media: stdout
+  log_level: info
+  log_dir: /var/log/
+  working_dir: .
+config_paths:
+  config_dir: /etc/crowdsec/
+  data_dir: /var/lib/crowdsec/data/
+  simulation_path: /etc/crowdsec/simulation.yaml
+  hub_dir: /etc/crowdsec/hub/
+  index_path: /etc/crowdsec/hub/.index.json
+  notification_dir: /etc/crowdsec/notifications/
+  plugin_dir: /usr/local/lib/crowdsec/plugins/
+crowdsec_service:
+  acquisition_path: /etc/crowdsec/acquis.yaml
+  acquisition_dir: /etc/crowdsec/acquis.d
+  parser_routines: 1
+plugin_config:
+  user: nobody
+  group: nogroup
+cscli:
+  output: human
+db_config:
+  log_level: info
+  type: sqlite
+  db_path: /var/lib/crowdsec/data/crowdsec.db
+  flush:
+    max_items: 5000
+    max_age: 7d
+  use_wal: false
+api:
+  client:
+    insecure_skip_verify: false
+    credentials_path: /etc/crowdsec/local_api_credentials.yaml
+  server:
+    log_level: info
+    listen_uri: $(echo ${LOCAL_API_URL:-http://0.0.0.0:8080} | cut  -d'/' -f3)
+    profiles_path: /etc/crowdsec/profiles.yaml
+    trusted_ips: # IP ranges, or IPs which can have admin API access
+      - 127.0.0.1
+      - ::1
+    online_client: # Central API credentials (to push signals and receive bad IPs)
+      credentials_path: /etc/crowdsec//online_api_credentials.yaml
+    enable: true
+prometheus:
+  enabled: true
+  level: full
+  listen_addr: 0.0.0.0
+  listen_port: 6060
+EOF
+)
+
+echo "${CONFIG}" > /etc/crowdsec/config.yaml
+
+
 mkdir -p /etc/crowdsec/bouncers/
-cscli bouncers delete localhost
+cscli bouncers delete localhost > /dev/null
 cscli bouncers add localhost | cut -d$'\n' -f3 | xargs -I {} printf "${FIREWALL_CONFIG}" > /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
 
 

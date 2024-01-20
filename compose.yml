@@ -5,7 +5,7 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - LOCAL_API_URL=http://0.0.0.0:9999	
+      - LOCAL_API_URL=http://0.0.0.0:8888
     volumes:
       - ./config:/etc/crowdsec
     network_mode: host
@@ -15,6 +15,6 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - LOCAL_API_URL=http://0.0.0.0:9999	
+      - LOCAL_API_URL=http://0.0.0.0:8888
     volumes:
       - ./config:/etc/crowdsec
