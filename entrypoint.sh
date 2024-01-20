@@ -1,7 +1,7 @@
 #!/bin/bash 
 
 FIREWALL_CONFIG=$(cat <<EOF
-mode: iptables
+mode: nftables
 update_frequency: 10s
 log_mode: file
 log_dir: /var/log/

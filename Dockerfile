@@ -5,6 +5,7 @@ RUN apt update && \
     apt update && \
     apt install -y \
       iptables \ 
+      nftables \
       crowdsec-firewall-bouncer-iptables && \
     apt autoremove && \
     apt clean && \
