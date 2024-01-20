@@ -24,7 +24,7 @@ services:
 
 ## Configuring
 This container extends the base docker image of crowdsec. Most setting remain the same as the base image. 
-  - https://hub.docker.com/r/crowdsecurity/crowdsec- 
+  - https://hub.docker.com/r/crowdsecurity/crowdsec
   - https://docs.crowdsec.net/docs/data_sources/docker/
 
 
