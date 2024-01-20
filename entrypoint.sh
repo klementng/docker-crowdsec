@@ -116,13 +116,20 @@ prometheus:
 EOF
 )
 
-echo "${CONFIG}" > /etc/crowdsec/config.yaml
+if [ "$1" == "cscli" ]; then
+    /bin/bash /docker_start.sh $@
+
+else
+    echo "${CONFIG}" > /etc/crowdsec/config.yaml
 
 
-mkdir -p /etc/crowdsec/bouncers/
-cscli bouncers delete localhost > /dev/null
-cscli bouncers add localhost | cut -d$'\n' -f3 | xargs -I {} printf "${FIREWALL_CONFIG}" > /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
+    mkdir -p /etc/crowdsec/bouncers/
+    cscli bouncers delete localhost > /dev/null
+    cscli bouncers add localhost | cut -d$'\n' -f3 | xargs -I {} printf "${FIREWALL_CONFIG}" > /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
 
+    /bin/bash /docker_start.sh $@ &
+    sleep 10
+    /usr/bin/crowdsec-firewall-bouncer -v -c /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml &
 
-/usr/bin/crowdsec-firewall-bouncer -v -c /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml &
-/bin/bash /docker_start.sh $@
+    wait $!
+fi
