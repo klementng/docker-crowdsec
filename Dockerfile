@@ -12,7 +12,7 @@ RUN apt update && \
         /tmp/* \
         /var/lib/apt/lists/* \
         /var/tmp/* \
-        /var/log/* && \
-    touch /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml.local && \
-    crowdsec cscli bouncers delete localhost; crowdsec cscli bouncers add localhost | cut -d$'\n' -f3 | xargs echo && \
-    echo "" > /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
+        /var/log/*
+
+COPY entrypoint.sh entrypoint.sh
+ENTRYPOINT /bin/bash /entrypoint.sh
