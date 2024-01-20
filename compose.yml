@@ -2,12 +2,17 @@ services:
   
   crowdsec:
     image: ghcr.io/klementng/docker-crowdsec:main
+    container_name: crowdsec
     cap_add:
       - NET_ADMIN
     environment:
-      - LOCAL_API_URL=http://0.0.0.0:8888
+      - TZ=${TZ}
+      - COLLECTIONS=crowdsecurity/nginx
+      - LOCAL_API_URL=http://0.0.0.0:55555 # bind to the following port
     volumes:
-      - ./config:/etc/crowdsec
+      - ./crowdsec/config:/etc/crowdsec
+      - ./crowdsec/data:/var/lib/crowdsec/data/
+    userns_mode: host
     network_mode: host
 
   test:
