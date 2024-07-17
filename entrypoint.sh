@@ -1,7 +1,7 @@
 #!/bin/bash 
 
 FIREWALL_CONFIG=$(cat <<EOF
-mode: nftables
+mode: iptables
 update_frequency: 10s
 log_mode: file
 log_dir: /var/log/
@@ -28,8 +28,8 @@ ipset_type: nethash
 #if present, insert rule in those chains
 iptables_chains:
   - INPUT
-#  - FORWARD
-#  - DOCKER-USER
+  - FORWARD
+  - DOCKER-USER
 
 ## nftables
 nftables:
