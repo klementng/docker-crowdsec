@@ -109,10 +109,10 @@ api:
       credentials_path: /etc/crowdsec//online_api_credentials.yaml
     enable: true
 prometheus:
-  enabled: true
-  level: full
-  listen_addr: 0.0.0.0
-  listen_port: 6060
+  enabled: ${PROMETHEUS_ENABLED:-true}
+  level: ${PROMETHEUS_LEVEL:-full}
+  listen_addr: ${PROMETHEUS_LISTEN_ADDR:-127.0.0.1}
+  listen_port: ${PROMETHEUS_LISTEN_PORT:-6060}
 EOF
 )
 
@@ -126,7 +126,7 @@ else
     cscli bouncers add localhost | cut -d$'\n' -f3 | xargs -I {} printf "${FIREWALL_CONFIG}" > /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
 
     /bin/bash /docker_start.sh $@ &
-    sleep 10
+    sleep 20
     /usr/bin/crowdsec-firewall-bouncer -v -c /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml &
 
     wait $!
