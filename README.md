@@ -53,6 +53,27 @@ To modify the above files create new .local in the same directory file (i.e. con
     <td>http://0.0.0.0:8080</td>
     <td><b>*Modified*</b> Set Server listening IP + LAPI url </td>
   </tr>
+  <tr>
+    <td>PROMETHEUS_ENABLED</td>
+    <td>true</td>
+    <td>Enable prometheus</td>
+  </tr>
+  <tr>
+    <td>PROMETHEUS_LEVEL</td>
+    <td>full</td>
+    <td>prometheus metrics level</td>
+  </tr>
+  <tr>
+    <td>PROMETHEUS_LISTEN_ADDR</td>
+    <td>127.0.0.1</td>
+    <td>Set prometheus listening IP</td>
+  </tr>
+  <tr>
+    <td>PROMETHEUS_LISTEN_PORT</td>
+    <td>6060</td>
+    <td>Set prometheus listening port</td>
+  </tr>
+
 <tr>
     <td>Others</td>
     <td></td>
