@@ -1,5 +1,4 @@
 services:
-  
   crowdsec:
     image: ghcr.io/klementng/docker-crowdsec:main
     container_name: crowdsec
@@ -7,20 +6,15 @@ services:
       - NET_ADMIN
     environment:
       - TZ=${TZ}
-      - COLLECTIONS=crowdsecurity/nginx
-      - LOCAL_API_URL=http://0.0.0.0:55555 # bind to the following port
+      - COLLECTIONS=crowdsecurity/nginx #...
+      - LOCAL_API_URL=http://127.0.0.1:55555 # bind to the following port
+      - PROMETHEUS_ENABLED=true
+      - PROMETHEUS_LEVEL=full
+      - PROMETHEUS_LISTEN_ADDR=127.0.0.1
+      - PROMETHEUS_LISTEN_PORT=6060
     volumes:
       - ./crowdsec/config:/etc/crowdsec
       - ./crowdsec/data:/var/lib/crowdsec/data/
     userns_mode: host
     network_mode: host
     restart: unless-stopped
-
-  test:
-    build: .
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - LOCAL_API_URL=http://0.0.0.0:8888
-    volumes:
-      - ./config:/etc/crowdsec
